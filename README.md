@@ -2,7 +2,7 @@
 A modern dark-themed calculator built with HTML, CSS &amp; JavaScript
 
 ## 🔗 Live Demo
-[Click here](https://PratoolGit.github.io/Modern-Basic-Calculator/)
+[Click here](https://pratoolgit.github.io/Modern-Basic-Calculator/)
 
 ## ✨ Features
 - Basic arithmetic (+, −, ×, ÷)
