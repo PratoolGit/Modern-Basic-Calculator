@@ -571,12 +571,10 @@ INDEX_HTML = """<!DOCTYPE html>
 
 @app.route("/")
 def index():
-    """Serve the single-page calculator application."""
+    
     return INDEX_HTML
 
 
 if __name__ == "__main__":
-    # host="0.0.0.0" makes it reachable on your local network too.
-    # debug=True is handy during development (auto-reload + error pages),
-    # turn it off for production use.
+
     app.run(host="0.0.0.0", port=5000, debug=True)
