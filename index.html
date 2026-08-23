@@ -564,15 +564,5 @@ INDEX_HTML = """<!DOCTYPE html>
 </script>
 </body>
 </html>
-"""
 
 
-@app.route("/")
-def index():
-    
-    return INDEX_HTML
-
-
-if __name__ == "__main__":
-
-    app.run(host="0.0.0.0", port=5000, debug=True)
