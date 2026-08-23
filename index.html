@@ -1,35 +1,16 @@
-"""
-Aether Calc — a premium glassmorphism calculator built with Flask.
 
-Single-file architecture:
-- Flask serves one route ("/") that returns a complete HTML document.
-- CSS and JavaScript are embedded directly inside the Python string via
-  a multiline f-string-free template (we use plain """ strings + .replace
-  is avoided — everything is just static text, no Jinja needed).
-- The math expression typed by the user is evaluated with a safe,
-  hand-rolled recursive-descent parser (see the JS `safeEvaluate`
-  function) — NOT JavaScript's eval() and NOT Python's eval(). This
-  guarantees no arbitrary code execution can occur from user input.
-
-Run with:
-    pip install flask
-    python app.py
-"""
 
 from flask import Flask
 
 app = Flask(__name__)
 
-# ---------------------------------------------------------------------------
-# The entire front-end (HTML + CSS + JS) lives in this one string.
-# It is served as-is by the "/" route below.
-# ---------------------------------------------------------------------------
+
 INDEX_HTML = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Aether Calc</title>
+<title>Modern Basic Calculator</title>
 <style>
   :root {
     --glass-bg: rgba(255, 255, 255, 0.06);
@@ -318,8 +299,8 @@ INDEX_HTML = """<!DOCTYPE html>
   <div class="calc-wrapper">
     <div class="calculator">
       <div class="header">
-        <span class="title">Aether Calc</span>
-        <span class="status">Python • Flask</span>
+        <span class="title">Modern Basic Calculator</span>
+        <span class="status">Made With HTML And Python </span>
       </div>
 
       <div class="display">
@@ -367,19 +348,14 @@ INDEX_HTML = """<!DOCTYPE html>
   const expressionEl = document.getElementById("expression");
   const resultEl = document.getElementById("result");
 
-  // ---------------------------------------------------------------------
-  // Safe math expression evaluator (recursive-descent parser)
-  // Supports: + - * / % ( ) decimals, unary minus.
-  // No eval() / Function() is used anywhere — this fully replaces it.
-  // ---------------------------------------------------------------------
+  
   function safeEvaluate(rawExpr) {
-    // Normalize display symbols to standard math operators
+    
     const expr = rawExpr
       .replace(/×/g, "*")
       .replace(/÷/g, "/")
       .replace(/−/g, "-")
-      .replace(/%/g, "/100");  // percent literal becomes /100 (e.g. 50% -> 50/100)
-
+      .replace(/%/g, "/100");  
     let pos = 0;
 
     function peek() { return expr[pos]; }
@@ -417,12 +393,12 @@ INDEX_HTML = """<!DOCTYPE html>
 
     function parseFactor() {
       skipSpaces();
-      // Unary plus/minus
+      
       if (peek() === "-") { next(); return -parseFactor(); }
       if (peek() === "+") { next(); return parseFactor(); }
 
       if (peek() === "(") {
-        next(); // consume "("
+        next(); 
         const value = parseExpression();
         skipSpaces();
         if (peek() !== ")") throw new Error("Mismatched parentheses");
@@ -430,7 +406,7 @@ INDEX_HTML = """<!DOCTYPE html>
         return value;
       }
 
-      // Parse a number (integer or decimal)
+      
       let start = pos;
       while (peek() !== undefined && /[0-9.]/.test(peek())) pos++;
       if (start === pos) throw new Error("Unexpected character: " + peek());
@@ -449,17 +425,15 @@ INDEX_HTML = """<!DOCTYPE html>
     return result;
   }
 
-  // ---------------------------------------------------------------------
-  // Display helpers
-  // ---------------------------------------------------------------------
+  
   function formatNumber(num) {
-    // Round to avoid floating point noise, then strip trailing zeros
+    
     const rounded = Math.round(num * 1e10) / 1e10;
     return rounded.toString();
   }
 
   function updateDisplay() {
-    expressionEl.textContent = expression.length ? expression : "\\u00A0";
+    expressionEl.textContent = expression.length ? expression : "\u00A0";
     // Live preview of the result while typing (best-effort, silent on error)
     if (expression.trim() === "") {
       resultEl.textContent = "0";
@@ -471,8 +445,7 @@ INDEX_HTML = """<!DOCTYPE html>
       resultEl.textContent = formatNumber(value);
       resultEl.classList.remove("error");
     } catch (e) {
-      // While typing, don't show "Error" for incomplete expressions —
-      // only show the last valid state. We just leave the previous result.
+      
     }
   }
 
@@ -482,9 +455,7 @@ INDEX_HTML = """<!DOCTYPE html>
     resultEl.classList.add("pulse");
   }
 
-  // ---------------------------------------------------------------------
-  // Input handling
-  // ---------------------------------------------------------------------
+
   function appendValue(value) {
     if (justEvaluated) {
       // Start fresh after "=", unless user continues with an operator
